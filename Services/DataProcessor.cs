@@ -1,6 +1,7 @@
 ﻿using Sensing4UDashboard.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,14 +29,16 @@ namespace Sensing4UDashboard.Services
             // Private constructor to prevent instantiation
         }
 
+        //method to calcluate the average held in the 2d array
         public double CalculateAverage(SensorDataSet dataSet)
         {
             double total = 0;
             int count = 0;
 
-            for (int row = 0; row < dataSet.columnCount; row++)
+            // Iterate through the 2D array and sum up the values while counting the number of valid entries
+            for (int row = 0; row < dataSet.RowCount; row++)
             {
-                for (int col = 0; col < dataSet.columnCount; col++)
+                for (int col = 0; col < dataSet.ColumnCount; col++)
                 {
                     if (dataSet.Data[row, col] != null)
                     {
@@ -51,6 +54,62 @@ namespace Sensing4UDashboard.Services
             }
 
             return total/count;
+        }
+
+        // Method to set bounds for the 2d array values in identifying an acceptable range
+        public string GetValueStatus(double value, double min, double max)
+        {
+            if (value < min)
+            {
+                return "Low";
+            }
+            else if (value > max)
+            {
+                return "High";
+            }
+            else
+            {
+                return "Acceptable";
+            }
+        }
+
+        // Method to convert the 2d array into a DataTable for easier display in the UI
+        public DataTable ConvertToDataTable(SensorDataSet dataSet)
+        {
+            DataTable table = new DataTable();
+
+            table.Columns.Add("Timestamp", typeof(DateTime));
+
+            // Add columns to the DataTable
+            for (int col = 0; col < dataSet.ColumnCount; col++)
+            {
+                string columnName = dataSet.Data[0, col]?.Label ?? $"Sensor {col + 1}";
+
+                table.Columns.Add(columnName, typeof(double));
+            }
+            // Add rows to the DataTable
+            for (int row = 0; row < dataSet.RowCount; row++)
+            {
+                DataRow dataRow = table.NewRow();
+
+                dataRow["Timestamp"] = dataSet.Data[row, 0]?.Timestamp ?? DateTime.MinValue;
+
+                for (int col = 0; col < dataSet.ColumnCount; col++)
+                {
+                    SensorData? sensorReading = dataSet.Data[row, col];
+
+                    if (sensorReading != null)
+                    {
+                        dataRow[col + 1] = sensorReading.Value;
+                    }
+                    else
+                    {
+                        dataRow[col + 1] = DBNull.Value;
+                    }
+                }
+                table.Rows.Add(dataRow);
+            }
+            return table;
         }
     }
 }
