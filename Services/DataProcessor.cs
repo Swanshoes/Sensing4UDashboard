@@ -32,6 +32,11 @@ namespace Sensing4UDashboard.Services
         //method to calcluate the average held in the 2d array
         public double CalculateAverage(SensorDataSet dataSet)
         {
+            if (dataSet == null || dataSet.Data == null)
+            {
+                return 0;
+            }
+
             double total = 0;
             int count = 0;
 
