@@ -1,5 +1,7 @@
 ﻿using Sensing4UDashboard.Models;
 using Sensing4UDashboard.Services;
+using System;
+using System.Data;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,7 +22,15 @@ namespace Sensing4UDashboard
     {
         public MainWindow()
         {
-            InitializeComponent();            
+            InitializeComponent();
+            
+            SensorDataSet dataSet = CreateSampleDataSet();
+
+            double average = DataProcessor.Instance.CalculateAverage(dataSet);
+            AverageTextBlock.Text = $"Average Value: {average:F2}";
+
+            DataTable dataTable = DataProcessor.Instance.ConvertToDataTable(dataSet);
+            SensorDataGrid.ItemsSource = dataTable.DefaultView;
         }
 
         public SensorDataSet CreateSampleDataSet()
