@@ -1,6 +1,7 @@
 ﻿using Sensing4UDashboard.Models;
 using Sensing4UDashboard.Services;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Text;
 using System.Windows;
@@ -21,6 +22,9 @@ namespace Sensing4UDashboard
     /// </summary>
     public partial class MainWindow : Window
     {
+        private List<SensorDataSet> _dataSets = new List<SensorDataSet>();
+        private int _currentDataSetIndex = 0;
+
         private double _lowerBound = 0;
         private double _upperBound = 100;
 
@@ -28,13 +32,11 @@ namespace Sensing4UDashboard
         {
             InitializeComponent();
 
-            SensorDataSet dataSet = CreateSampleDataSet();
+            _dataSets.Add(CreateSampleDataSet());
+            _dataSets.Add(CreateSampleDataSet2());
 
-            double average = DataProcessor.Instance.CalculateAverage(dataSet);
-            AverageTextBlock.Text = $"Average Value: {average:F2}";
+            LoadCurrentDataSet();
 
-            DataTable dataTable = DataProcessor.Instance.ConvertToDataTable(dataSet);
-            SensorDataGrid.ItemsSource = dataTable.DefaultView;
         }
 
         public SensorDataSet CreateSampleDataSet()
@@ -52,6 +54,24 @@ namespace Sensing4UDashboard
             dataSet.Data[1, 0] = new SensorData { Label = "Temperature", Value = 23.5, Timestamp = timeTwo };
             dataSet.Data[1, 1] = new SensorData { Label = "Humidity", Value = 47.0, Timestamp = timeTwo };
             dataSet.Data[1, 2] = new SensorData { Label = "Pressure", Value = 100.8, Timestamp = timeTwo };
+
+            return dataSet;
+        }
+        public SensorDataSet CreateSampleDataSet2()
+        {
+            SensorDataSet dataSet = new SensorDataSet(2, 3);
+            dataSet.Name = "Storage Room Sensors";
+
+            DateTime timeOne = DateTime.Now;
+            DateTime timeTwo = DateTime.Now.AddMinutes(5);
+
+            dataSet.Data[0, 0] = new SensorData { Label = "Temperature", Value = 18.2, Timestamp = timeOne };
+            dataSet.Data[0, 1] = new SensorData { Label = "Humidity", Value = 52.0, Timestamp = timeOne };
+            dataSet.Data[0, 2] = new SensorData { Label = "Pressure", Value = 99.5, Timestamp = timeOne };
+
+            dataSet.Data[1, 0] = new SensorData { Label = "Temperature", Value = 19.1, Timestamp = timeTwo };
+            dataSet.Data[1, 1] = new SensorData { Label = "Humidity", Value = 53.5, Timestamp = timeTwo };
+            dataSet.Data[1, 2] = new SensorData { Label = "Pressure", Value = 100.1, Timestamp = timeTwo };
 
             return dataSet;
         }
@@ -73,12 +93,20 @@ namespace Sensing4UDashboard
 
         private void PreviousDataSetButton_Click(object sender, RoutedEventArgs e)
         {
-            StatusMessageTextBlock.Text = "Previous dataset selected.";
+            if (_currentDataSetIndex > 0)
+            {
+                _currentDataSetIndex--;
+                LoadCurrentDataSet();
+            }
         }
 
         private void NextDataSetButton_Click(object sender, RoutedEventArgs e)
         {
-            StatusMessageTextBlock.Text = "Next dataset selected.";
+            if (_currentDataSetIndex < _dataSets.Count - 1)
+            {
+                _currentDataSetIndex++;
+                LoadCurrentDataSet();
+            }
         }
 
         private void ApplyBoundsButton_Click(object sender, RoutedEventArgs e)
@@ -102,7 +130,7 @@ namespace Sensing4UDashboard
             }
             _lowerBound = lowerBound;
             _upperBound = upperBound;
-            SensorDataGrid.Items.Refresh();
+            LoadCurrentDataSet();
             StatusMessageTextBlock.Text = $"Bounds applied: Lower = {_lowerBound}, Upper = {_upperBound}";
         }
 
@@ -121,7 +149,7 @@ namespace Sensing4UDashboard
 
                     object? cellValue = rowView.Row[columnIndex];
 
-                    if (double.TryParse(cellValue.ToString(), out double value) {
+                    if (double.TryParse(cellValue.ToString(), out double value)) {
                         string status = DataProcessor.Instance.GetValueStatus(value, _lowerBound, _upperBound);
                         switch (status)
                         {
@@ -166,6 +194,27 @@ namespace Sensing4UDashboard
                     return result;
             }
             return null;
+        }
+
+        private void LoadCurrentDataSet()
+        {
+            if (_dataSets.Count == 0)
+            {
+                StatusMessageTextBlock.Text = "No datasets loaded.";
+                return;
+            }
+            SensorDataSet currentDataSet = _dataSets[_currentDataSetIndex];
+            DataTable dataTable = DataProcessor.Instance.ConvertToDataTable(currentDataSet);
+            SensorDataGrid.ItemsSource = dataTable.DefaultView;
+            double average = DataProcessor.Instance.CalculateAverage(currentDataSet);
+            AverageTextBlock.Text = average.ToString("F2");
+
+            CurrentDataSetTextBlock.Text = $"Dataset: {currentDataSet.Name}";
+
+            PreviousDataSetButton.IsEnabled = _currentDataSetIndex > 0;
+            NextDataSetButton.IsEnabled = _currentDataSetIndex < _dataSets.Count - 1;
+
+            StatusMessageTextBlock.Text = $"Loaded dataset: {_currentDataSetIndex + 1} of {_dataSets.Count}";
         }
     }
 }
