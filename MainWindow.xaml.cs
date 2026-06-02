@@ -1,4 +1,5 @@
-﻿using Sensing4UDashboard.Models;
+﻿using Microsoft.Win32;
+using Sensing4UDashboard.Models;
 using Sensing4UDashboard.Services;
 using System;
 using System.Collections.Generic;
@@ -78,12 +79,74 @@ namespace Sensing4UDashboard
 
         private void LoadMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            StatusMessageTextBlock.Text = "Load selected.";
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = "Binary sensor files (*.bin)|*.bin|All files (*.*)|*.*";
+
+            bool? result = dialog.ShowDialog();
+
+            if (result == true)
+            {
+                try
+                {
+                    FileManager fileManager = new FileManager();
+                    SensorDataSet loadedDataSet = fileManager.LoadBinaryFile(dialog.FileName);
+
+                    _dataSets.Add(loadedDataSet);
+
+                    _currentDataSetIndex = _dataSets.Count - 1;
+                    LoadCurrentDataSet();
+                    StatusMessageTextBlock.Text = $"Loaded {loadedDataSet.Name}.";
+                    MessageBox.Show(
+    $"Loaded: {loadedDataSet.Name}\n" +
+    $"Rows: {loadedDataSet.RowCount}\n" +
+    $"Columns: {loadedDataSet.ColumnCount}\n" +
+    $"First value: {loadedDataSet.Data[0, 0]?.Value.ToString() ?? "NULL"}"
+);
+                }
+                catch (Exception ex)
+                {
+                    StatusMessageTextBlock.Text = $"Error loading file: {ex.Message}";
+                }
+
+            }
         }
 
         private void SaveMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            StatusMessageTextBlock.Text = "Save selected.";
+            if (_dataSets.Count == 0)
+            {
+                StatusMessageTextBlock.Text = "No datasets to save.";
+                return;
+            }
+
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.Filter = "Binary sensor files (*.bin)|*.bin|All files (*.*)|*.*";
+            dialog.FileName = _dataSets[_currentDataSetIndex].Name + ".bin";
+
+            bool? result = dialog.ShowDialog();
+
+            if (result == true)
+            {
+                try
+                {
+                    FileManager fileManager = new FileManager();
+                    SensorDataSet currentDataSet = _dataSets[_currentDataSetIndex];
+
+                    MessageBox.Show(
+    $"About to save: {currentDataSet.Name}\n" +
+    $"Rows: {currentDataSet.RowCount}\n" +
+    $"Columns: {currentDataSet.ColumnCount}\n" +
+    $"First value before save: {currentDataSet.Data[0, 0]?.Value.ToString() ?? "NULL"}"
+);
+                    fileManager.SaveBinaryFile(dialog.FileName, currentDataSet);
+
+                    StatusMessageTextBlock.Text = $"Saved {currentDataSet.Name}.";
+                }
+                catch (Exception ex)
+                {
+                    StatusMessageTextBlock.Text = $"Error saving file: {ex.Message}";
+                }
+            }
         }
 
         private void ExitMenuItem_Click(object sender, RoutedEventArgs e)
