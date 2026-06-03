@@ -262,6 +262,7 @@ namespace Sensing4UDashboard
             }
         }
 
+        //below two functions are used to find the specific cell in the DataGrid to apply the background color based on the value status
         private DataGridCell? GetDataGridCell(DataGridRow row, int columnIndex)
         {
             DataGridCellsPresenter? presenter = FindVisualChild<DataGridCellsPresenter>(row);
@@ -286,6 +287,7 @@ namespace Sensing4UDashboard
             return null;
         }
 
+        //resuable function to allow the dataSet to be loaded and displayed depending on what user choice is
         private void LoadCurrentDataSet()
         {
             if (_dataSets.Count == 0)
