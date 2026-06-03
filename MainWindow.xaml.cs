@@ -230,9 +230,36 @@ namespace Sensing4UDashboard
                                 break;
                         }
                     }
-
                 }
             };
+        }
+
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_dataSets.Count == 0)
+            {
+                StatusMessageTextBlock.Text = "No datasets loaded.";
+                return;
+            }
+
+            if (!double.TryParse(SearchValueTextBox.Text, out double value)) 
+            {
+                StatusMessageTextBlock.Text = "Please enter a valid numerical value.";
+                return;
+            }
+
+            SensorDataSet currentDataSet = _dataSets[_currentDataSetIndex];
+
+            SensorData? foundData = DataProcessor.Instance.FindSensorValue(currentDataSet, value);
+
+            if (foundData != null)
+            {
+                StatusMessageTextBlock.Text = $"Found value: {foundData.Value} at {foundData.Timestamp}";
+            }
+            else
+            {
+                StatusMessageTextBlock.Text = "Value not found in current dataset.";
+            }
         }
 
         private DataGridCell? GetDataGridCell(DataGridRow row, int columnIndex)

@@ -27,8 +27,10 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
+            <!-- Dataset navigation -->
             <Border Grid.Row="0"
                     BorderBrush="LightGray"
                     BorderThickness="1"
@@ -66,6 +68,7 @@
                 </Grid>
             </Border>
 
+            <!-- Bounds and average -->
             <Border Grid.Row="1"
                     BorderBrush="LightGray"
                     BorderThickness="1"
@@ -125,6 +128,7 @@
                 </Grid>
             </Border>
 
+            <!-- Sensor data grid -->
             <DataGrid x:Name="SensorDataGrid"
                       Grid.Row="2"
                       AutoGenerateColumns="True"
@@ -134,10 +138,51 @@
                       GridLinesVisibility="All"
                       HeadersVisibility="All"
                       LoadingRow="SensorDataGrid_LoadingRow"
-
                       Margin="0,0,0,10"/>
 
+            <!-- Search section -->
             <Border Grid.Row="3"
+                    BorderBrush="LightGray"
+                    BorderThickness="1"
+                    Padding="8"
+                    Margin="0,0,0,10">
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0"
+                               Text="Search Sensor Value:"
+                               VerticalAlignment="Center"
+                               Margin="0,0,5,0"/>
+
+                    <TextBox x:Name="SearchValueTextBox"
+                             Grid.Column="1"
+                             Height="26"
+                             Margin="0,0,10,0"/>
+
+                    <Button x:Name="SearchButton"
+                            Grid.Column="2"
+                            Content="Search"
+                            Width="80"
+                            Height="28"
+                            Click="SearchButton_Click"/>
+
+                    <TextBlock Grid.Column="3"
+                               Text="Searches the current loaded dataset using binary search."
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right"
+                               FontStyle="Italic"
+                               Foreground="Gray"/>
+                </Grid>
+            </Border>
+
+            <!-- Colour legend and status -->
+            <Border Grid.Row="4"
                     BorderBrush="LightGray"
                     BorderThickness="1"
                     Padding="8">
