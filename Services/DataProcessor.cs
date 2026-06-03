@@ -1,4 +1,5 @@
-﻿using Sensing4UDashboard.Models;
+﻿using Microsoft.Windows.Themes;
+using Sensing4UDashboard.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -58,7 +59,7 @@ namespace Sensing4UDashboard.Services
                 return 0; // Avoid division by zero
             }
 
-            return total/count;
+            return total / count;
         }
 
         // Method to set bounds for the 2d array values in identifying an acceptable range
@@ -115,6 +116,71 @@ namespace Sensing4UDashboard.Services
                 table.Rows.Add(dataRow);
             }
             return table;
+        }
+
+        public List<SensorData> SortData(SensorDataSet data)
+        {
+            List<SensorData> sortedData = new List<SensorData>();
+
+            for (int row = 0; row < data.RowCount; row++)
+            {
+                for (int column = 0; column < data.ColumnCount; column++)
+                {
+                    SensorData? reading = data.Data[row, column];
+
+                    if (reading != null)
+                    {
+                        sortedData.Add(reading);
+                    }
+
+                    
+                }
+            }
+            sortedData = sortedData.OrderBy(reading => reading.Value).ToList();
+
+            return sortedData;
+        }
+
+        public int BinarySearch(List<SensorData> sortedData, double target)
+        {
+            int low = 0;
+            int high = sortedData.Count - 1;
+
+            while (low <= high)
+            {
+                int mid = (low + high) / 2;
+                double midValue = sortedData[mid].Value;
+
+                if (midValue == target)
+                {
+                    return mid;
+                }
+
+                if (midValue < target)
+                {
+                    low = mid + 1;
+                }
+                else
+                {
+                    high = mid - 1;
+                }
+            }
+            return -1;
+        }
+
+        //this method uses the above two (Binary Search and SortData) to find the data point to return info to user
+        public SensorData? FindSensorValue(SensorDataSet sensorData, double target)
+        {
+            List<SensorData> sortedData = SortData(sensorData);
+
+            int index = BinarySearch(sortedData, target);
+
+            if (index == -1)
+            {
+                return null;
+            }
+
+            return sortedData[index];
         }
     }
 }
