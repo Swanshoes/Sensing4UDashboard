@@ -35,6 +35,9 @@ namespace Sensing4UDashboard
 
             _dataSets.Add(CreateSampleDataSet());
             _dataSets.Add(CreateSampleDataSet2());
+            _dataSets.Add(CreateGreenhouseTemperatureDataSet());
+            _dataSets.Add(CreateColdStorageHumidityDataSet());
+            _dataSets.Add(CreateWaterTankPressureDataSet());
 
             LoadCurrentDataSet();
 
@@ -43,7 +46,7 @@ namespace Sensing4UDashboard
         public SensorDataSet CreateSampleDataSet()
         {
             SensorDataSet dataSet = new SensorDataSet(2, 3);
-            dataSet.Name = "Test DataSet";
+            dataSet.Name = "Initial Data";
 
             DateTime timeOne = DateTime.Now;
             DateTime timeTwo = DateTime.Now.AddMinutes(5);
@@ -73,6 +76,156 @@ namespace Sensing4UDashboard
             dataSet.Data[1, 0] = new SensorData { Label = "Temperature", Value = 19.1, Timestamp = timeTwo };
             dataSet.Data[1, 1] = new SensorData { Label = "Humidity", Value = 53.5, Timestamp = timeTwo };
             dataSet.Data[1, 2] = new SensorData { Label = "Pressure", Value = 100.1, Timestamp = timeTwo };
+
+            return dataSet;
+        }
+
+        private SensorDataSet CreateGreenhouseTemperatureDataSet()
+        {
+            SensorDataSet dataSet = new SensorDataSet(10, 3);
+            dataSet.Name = "Greenhouse Temperature Readings";
+
+            DateTime baseDate = new DateTime(2026, 6, 4);
+
+            dataSet.Data[0, 0] = new SensorData { Label = "Temp Sensor A", Value = 21.4, Timestamp = baseDate.AddHours(8) };
+            dataSet.Data[0, 1] = new SensorData { Label = "Temp Sensor B", Value = 21.7, Timestamp = baseDate.AddHours(8) };
+            dataSet.Data[0, 2] = new SensorData { Label = "Temp Sensor C", Value = 22.1, Timestamp = baseDate.AddHours(8) };
+
+            dataSet.Data[1, 0] = new SensorData { Label = "Temp Sensor A", Value = 22.0, Timestamp = baseDate.AddHours(9) };
+            dataSet.Data[1, 1] = new SensorData { Label = "Temp Sensor B", Value = 22.3, Timestamp = baseDate.AddHours(9) };
+            dataSet.Data[1, 2] = new SensorData { Label = "Temp Sensor C", Value = 22.8, Timestamp = baseDate.AddHours(9) };
+
+            dataSet.Data[2, 0] = new SensorData { Label = "Temp Sensor A", Value = 23.1, Timestamp = baseDate.AddHours(10) };
+            dataSet.Data[2, 1] = new SensorData { Label = "Temp Sensor B", Value = 23.5, Timestamp = baseDate.AddHours(10) };
+            dataSet.Data[2, 2] = new SensorData { Label = "Temp Sensor C", Value = 24.0, Timestamp = baseDate.AddHours(10) };
+
+            dataSet.Data[3, 0] = new SensorData { Label = "Temp Sensor A", Value = 24.2, Timestamp = baseDate.AddHours(11) };
+            dataSet.Data[3, 1] = new SensorData { Label = "Temp Sensor B", Value = 24.6, Timestamp = baseDate.AddHours(11) };
+            dataSet.Data[3, 2] = new SensorData { Label = "Temp Sensor C", Value = 25.1, Timestamp = baseDate.AddHours(11) };
+
+            dataSet.Data[4, 0] = new SensorData { Label = "Temp Sensor A", Value = 25.3, Timestamp = baseDate.AddHours(12) };
+            dataSet.Data[4, 1] = new SensorData { Label = "Temp Sensor B", Value = 25.9, Timestamp = baseDate.AddHours(12) };
+            dataSet.Data[4, 2] = new SensorData { Label = "Temp Sensor C", Value = 26.4, Timestamp = baseDate.AddHours(12) };
+
+            dataSet.Data[5, 0] = new SensorData { Label = "Temp Sensor A", Value = 26.2, Timestamp = baseDate.AddHours(13) };
+            dataSet.Data[5, 1] = new SensorData { Label = "Temp Sensor B", Value = 26.7, Timestamp = baseDate.AddHours(13) };
+            dataSet.Data[5, 2] = new SensorData { Label = "Temp Sensor C", Value = 27.1, Timestamp = baseDate.AddHours(13) };
+
+            dataSet.Data[6, 0] = new SensorData { Label = "Temp Sensor A", Value = 26.8, Timestamp = baseDate.AddHours(14) };
+            dataSet.Data[6, 1] = new SensorData { Label = "Temp Sensor B", Value = 27.4, Timestamp = baseDate.AddHours(14) };
+            dataSet.Data[6, 2] = new SensorData { Label = "Temp Sensor C", Value = 28.0, Timestamp = baseDate.AddHours(14) };
+
+            dataSet.Data[7, 0] = new SensorData { Label = "Temp Sensor A", Value = 26.1, Timestamp = baseDate.AddHours(15) };
+            dataSet.Data[7, 1] = new SensorData { Label = "Temp Sensor B", Value = 26.5, Timestamp = baseDate.AddHours(15) };
+            dataSet.Data[7, 2] = new SensorData { Label = "Temp Sensor C", Value = 27.0, Timestamp = baseDate.AddHours(15) };
+
+            dataSet.Data[8, 0] = new SensorData { Label = "Temp Sensor A", Value = 24.9, Timestamp = baseDate.AddHours(16) };
+            dataSet.Data[8, 1] = new SensorData { Label = "Temp Sensor B", Value = 25.2, Timestamp = baseDate.AddHours(16) };
+            dataSet.Data[8, 2] = new SensorData { Label = "Temp Sensor C", Value = 25.7, Timestamp = baseDate.AddHours(16) };
+
+            dataSet.Data[9, 0] = new SensorData { Label = "Temp Sensor A", Value = 23.6, Timestamp = baseDate.AddHours(17) };
+            dataSet.Data[9, 1] = new SensorData { Label = "Temp Sensor B", Value = 24.0, Timestamp = baseDate.AddHours(17) };
+            dataSet.Data[9, 2] = new SensorData { Label = "Temp Sensor C", Value = 24.3, Timestamp = baseDate.AddHours(17) };
+
+            return dataSet;
+        }
+
+        private SensorDataSet CreateColdStorageHumidityDataSet()
+        {
+            SensorDataSet dataSet = new SensorDataSet(10, 3);
+            dataSet.Name = "Cold Storage Humidity Readings";
+
+            DateTime baseDate = new DateTime(2026, 6, 4);
+
+            dataSet.Data[0, 0] = new SensorData { Label = "Humidity Sensor A", Value = 63.2, Timestamp = baseDate.AddHours(6) };
+            dataSet.Data[0, 1] = new SensorData { Label = "Humidity Sensor B", Value = 64.1, Timestamp = baseDate.AddHours(6) };
+            dataSet.Data[0, 2] = new SensorData { Label = "Humidity Sensor C", Value = 62.8, Timestamp = baseDate.AddHours(6) };
+
+            dataSet.Data[1, 0] = new SensorData { Label = "Humidity Sensor A", Value = 63.8, Timestamp = baseDate.AddHours(7) };
+            dataSet.Data[1, 1] = new SensorData { Label = "Humidity Sensor B", Value = 64.6, Timestamp = baseDate.AddHours(7) };
+            dataSet.Data[1, 2] = new SensorData { Label = "Humidity Sensor C", Value = 63.3, Timestamp = baseDate.AddHours(7) };
+
+            dataSet.Data[2, 0] = new SensorData { Label = "Humidity Sensor A", Value = 65.0, Timestamp = baseDate.AddHours(8) };
+            dataSet.Data[2, 1] = new SensorData { Label = "Humidity Sensor B", Value = 65.7, Timestamp = baseDate.AddHours(8) };
+            dataSet.Data[2, 2] = new SensorData { Label = "Humidity Sensor C", Value = 64.4, Timestamp = baseDate.AddHours(8) };
+
+            dataSet.Data[3, 0] = new SensorData { Label = "Humidity Sensor A", Value = 66.2, Timestamp = baseDate.AddHours(9) };
+            dataSet.Data[3, 1] = new SensorData { Label = "Humidity Sensor B", Value = 67.1, Timestamp = baseDate.AddHours(9) };
+            dataSet.Data[3, 2] = new SensorData { Label = "Humidity Sensor C", Value = 65.9, Timestamp = baseDate.AddHours(9) };
+
+            dataSet.Data[4, 0] = new SensorData { Label = "Humidity Sensor A", Value = 67.5, Timestamp = baseDate.AddHours(10) };
+            dataSet.Data[4, 1] = new SensorData { Label = "Humidity Sensor B", Value = 68.0, Timestamp = baseDate.AddHours(10) };
+            dataSet.Data[4, 2] = new SensorData { Label = "Humidity Sensor C", Value = 66.8, Timestamp = baseDate.AddHours(10) };
+
+            dataSet.Data[5, 0] = new SensorData { Label = "Humidity Sensor A", Value = 68.1, Timestamp = baseDate.AddHours(11) };
+            dataSet.Data[5, 1] = new SensorData { Label = "Humidity Sensor B", Value = 69.2, Timestamp = baseDate.AddHours(11) };
+            dataSet.Data[5, 2] = new SensorData { Label = "Humidity Sensor C", Value = 67.9, Timestamp = baseDate.AddHours(11) };
+
+            dataSet.Data[6, 0] = new SensorData { Label = "Humidity Sensor A", Value = 68.7, Timestamp = baseDate.AddHours(12) };
+            dataSet.Data[6, 1] = new SensorData { Label = "Humidity Sensor B", Value = 69.5, Timestamp = baseDate.AddHours(12) };
+            dataSet.Data[6, 2] = new SensorData { Label = "Humidity Sensor C", Value = 68.3, Timestamp = baseDate.AddHours(12) };
+
+            dataSet.Data[7, 0] = new SensorData { Label = "Humidity Sensor A", Value = 67.9, Timestamp = baseDate.AddHours(13) };
+            dataSet.Data[7, 1] = new SensorData { Label = "Humidity Sensor B", Value = 68.8, Timestamp = baseDate.AddHours(13) };
+            dataSet.Data[7, 2] = new SensorData { Label = "Humidity Sensor C", Value = 67.2, Timestamp = baseDate.AddHours(13) };
+
+            dataSet.Data[8, 0] = new SensorData { Label = "Humidity Sensor A", Value = 66.4, Timestamp = baseDate.AddHours(14) };
+            dataSet.Data[8, 1] = new SensorData { Label = "Humidity Sensor B", Value = 67.0, Timestamp = baseDate.AddHours(14) };
+            dataSet.Data[8, 2] = new SensorData { Label = "Humidity Sensor C", Value = 65.8, Timestamp = baseDate.AddHours(14) };
+
+            dataSet.Data[9, 0] = new SensorData { Label = "Humidity Sensor A", Value = 65.5, Timestamp = baseDate.AddHours(15) };
+            dataSet.Data[9, 1] = new SensorData { Label = "Humidity Sensor B", Value = 66.1, Timestamp = baseDate.AddHours(15) };
+            dataSet.Data[9, 2] = new SensorData { Label = "Humidity Sensor C", Value = 64.9, Timestamp = baseDate.AddHours(15) };
+
+            return dataSet;
+        }
+
+        private SensorDataSet CreateWaterTankPressureDataSet()
+        {
+            SensorDataSet dataSet = new SensorDataSet(10, 3);
+            dataSet.Name = "Water Tank Pressure Readings";
+
+            DateTime baseDate = new DateTime(2026, 6, 4);
+
+            dataSet.Data[0, 0] = new SensorData { Label = "Pressure Sensor A", Value = 118.4, Timestamp = baseDate.AddHours(5) };
+            dataSet.Data[0, 1] = new SensorData { Label = "Pressure Sensor B", Value = 119.1, Timestamp = baseDate.AddHours(5) };
+            dataSet.Data[0, 2] = new SensorData { Label = "Pressure Sensor C", Value = 117.8, Timestamp = baseDate.AddHours(5) };
+
+            dataSet.Data[1, 0] = new SensorData { Label = "Pressure Sensor A", Value = 120.2, Timestamp = baseDate.AddHours(6) };
+            dataSet.Data[1, 1] = new SensorData { Label = "Pressure Sensor B", Value = 121.0, Timestamp = baseDate.AddHours(6) };
+            dataSet.Data[1, 2] = new SensorData { Label = "Pressure Sensor C", Value = 119.4, Timestamp = baseDate.AddHours(6) };
+
+            dataSet.Data[2, 0] = new SensorData { Label = "Pressure Sensor A", Value = 124.5, Timestamp = baseDate.AddHours(7) };
+            dataSet.Data[2, 1] = new SensorData { Label = "Pressure Sensor B", Value = 125.2, Timestamp = baseDate.AddHours(7) };
+            dataSet.Data[2, 2] = new SensorData { Label = "Pressure Sensor C", Value = 123.8, Timestamp = baseDate.AddHours(7) };
+
+            dataSet.Data[3, 0] = new SensorData { Label = "Pressure Sensor A", Value = 128.3, Timestamp = baseDate.AddHours(8) };
+            dataSet.Data[3, 1] = new SensorData { Label = "Pressure Sensor B", Value = 129.1, Timestamp = baseDate.AddHours(8) };
+            dataSet.Data[3, 2] = new SensorData { Label = "Pressure Sensor C", Value = 127.6, Timestamp = baseDate.AddHours(8) };
+
+            dataSet.Data[4, 0] = new SensorData { Label = "Pressure Sensor A", Value = 131.0, Timestamp = baseDate.AddHours(9) };
+            dataSet.Data[4, 1] = new SensorData { Label = "Pressure Sensor B", Value = 132.4, Timestamp = baseDate.AddHours(9) };
+            dataSet.Data[4, 2] = new SensorData { Label = "Pressure Sensor C", Value = 130.2, Timestamp = baseDate.AddHours(9) };
+
+            dataSet.Data[5, 0] = new SensorData { Label = "Pressure Sensor A", Value = 134.7, Timestamp = baseDate.AddHours(10) };
+            dataSet.Data[5, 1] = new SensorData { Label = "Pressure Sensor B", Value = 135.5, Timestamp = baseDate.AddHours(10) };
+            dataSet.Data[5, 2] = new SensorData { Label = "Pressure Sensor C", Value = 133.8, Timestamp = baseDate.AddHours(10) };
+
+            dataSet.Data[6, 0] = new SensorData { Label = "Pressure Sensor A", Value = 136.2, Timestamp = baseDate.AddHours(11) };
+            dataSet.Data[6, 1] = new SensorData { Label = "Pressure Sensor B", Value = 137.0, Timestamp = baseDate.AddHours(11) };
+            dataSet.Data[6, 2] = new SensorData { Label = "Pressure Sensor C", Value = 135.6, Timestamp = baseDate.AddHours(11) };
+
+            dataSet.Data[7, 0] = new SensorData { Label = "Pressure Sensor A", Value = 133.9, Timestamp = baseDate.AddHours(12) };
+            dataSet.Data[7, 1] = new SensorData { Label = "Pressure Sensor B", Value = 134.6, Timestamp = baseDate.AddHours(12) };
+            dataSet.Data[7, 2] = new SensorData { Label = "Pressure Sensor C", Value = 133.0, Timestamp = baseDate.AddHours(12) };
+
+            dataSet.Data[8, 0] = new SensorData { Label = "Pressure Sensor A", Value = 129.8, Timestamp = baseDate.AddHours(13) };
+            dataSet.Data[8, 1] = new SensorData { Label = "Pressure Sensor B", Value = 130.4, Timestamp = baseDate.AddHours(13) };
+            dataSet.Data[8, 2] = new SensorData { Label = "Pressure Sensor C", Value = 129.1, Timestamp = baseDate.AddHours(13) };
+
+            dataSet.Data[9, 0] = new SensorData { Label = "Pressure Sensor A", Value = 125.6, Timestamp = baseDate.AddHours(14) };
+            dataSet.Data[9, 1] = new SensorData { Label = "Pressure Sensor B", Value = 126.2, Timestamp = baseDate.AddHours(14) };
+            dataSet.Data[9, 2] = new SensorData { Label = "Pressure Sensor C", Value = 124.9, Timestamp = baseDate.AddHours(14) };
 
             return dataSet;
         }
