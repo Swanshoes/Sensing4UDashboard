@@ -249,12 +249,7 @@ namespace Sensing4UDashboard
                     _currentDataSetIndex = _dataSets.Count - 1;
                     LoadCurrentDataSet();
                     StatusMessageTextBlock.Text = $"Loaded {loadedDataSet.Name}.";
-                    MessageBox.Show(
-    $"Loaded: {loadedDataSet.Name}\n" +
-    $"Rows: {loadedDataSet.RowCount}\n" +
-    $"Columns: {loadedDataSet.ColumnCount}\n" +
-    $"First value: {loadedDataSet.Data[0, 0]?.Value.ToString() ?? "NULL"}"
-);
+                   
                 }
                 catch (Exception ex)
                 {
@@ -285,12 +280,7 @@ namespace Sensing4UDashboard
                     FileManager fileManager = new FileManager();
                     SensorDataSet currentDataSet = _dataSets[_currentDataSetIndex];
 
-                    MessageBox.Show(
-    $"About to save: {currentDataSet.Name}\n" +
-    $"Rows: {currentDataSet.RowCount}\n" +
-    $"Columns: {currentDataSet.ColumnCount}\n" +
-    $"First value before save: {currentDataSet.Data[0, 0]?.Value.ToString() ?? "NULL"}"
-);
+                    
                     fileManager.SaveBinaryFile(dialog.FileName, currentDataSet);
 
                     StatusMessageTextBlock.Text = $"Saved {currentDataSet.Name}.";
